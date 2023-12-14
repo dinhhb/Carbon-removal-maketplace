@@ -1,21 +1,29 @@
 
-import { Hero, Breadcrumbs } from "@components/common"
-import { CourseList } from "@components/course"
+import { Hero } from "@components/common"
+import { MethodList } from "@components/method"
 import { BaseLayout } from "@components/layout"
-import { OrderCard } from "@components/order"
-import { EthRates, WalletBar } from "@components/web3"
+import { getAllMethods } from "@content/methods/fetcher"
 
-export default function Home() {
+export default function Home({methods}) {
   return (
     <>
       <Hero />
-      <Breadcrumbs />
-      <WalletBar />
-      <EthRates />
-      <OrderCard />
-      <CourseList />
+      <MethodList 
+        methods={methods}
+      />
     </>
   )
+}
+
+
+export function getStaticProps(){
+  const { data } = getAllMethods()
+
+  return {
+    props: {
+      methods: data
+    }
+  }
 }
 
 Home.Layout = BaseLayout

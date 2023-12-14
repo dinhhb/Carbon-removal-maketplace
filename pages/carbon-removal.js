@@ -1,10 +1,10 @@
-import { Modal } from "@components/common";
 import {
   CourseHero,
-  Curriculum,
-  Keypoints
+  Example,
 } from "@components/course";
+
 import { BaseLayout } from "@components/layout";
+import { Modal } from "@components/common";
 
 export default function Course() {
 
@@ -12,11 +12,9 @@ export default function Course() {
     <>
       <div className="py-4">
         <CourseHero />
+        <Example/>
       </div>
-      <Keypoints />
-      <Curriculum />
-      <Modal />
-    </>
+   </>
   )
 }
 

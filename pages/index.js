@@ -1,10 +1,11 @@
 
-import { Hero } from "@components/common"
-import { MethodList } from "@components/method"
-import { BaseLayout } from "@components/layout"
+import { Hero } from "@components/ui/common"
+import { MethodList } from "@components/ui/method"
+import { BaseLayout } from "@components/ui/layout"
 import { getAllMethods } from "@content/methods/fetcher"
 
 export default function Home({methods}) {
+  // console.log(web3)
   return (
     <>
       <Hero />

@@ -1,10 +1,10 @@
 import {
     CourseHero,
     Example,
-} from "@components/method";
+} from "@components/ui/method";
 
-import { BaseLayout } from "@components/layout";
-import { Modal } from "@components/common";
+import { BaseLayout } from "@components/ui/layout";
+import { Modal } from "@components/ui/common";
 import { getAllMethods } from "@content/methods/fetcher";
 
 export default function Course({method}) {

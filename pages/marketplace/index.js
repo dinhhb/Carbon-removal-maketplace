@@ -1,14 +1,15 @@
 
 import { Hero } from "@components/ui/common"
-import { MethodList } from "@components/ui/method"
+import { MethodCard, MethodList } from "@components/ui/method"
 import { BaseLayout } from "@components/ui/layout"
 import { getAllMethods } from "@content/methods/fetcher"
 import { WalletBar } from "@components/ui/web3"
-import { useAccount } from "@components/hooks/web3/useAccount"
+import { useAccount, useNetwork } from "@components/hooks/web3"
 
 export default function Marketplace({ methods }) {
 
     const { account } = useAccount()
+    const { network } = useNetwork()
 
     return (
         <>
@@ -16,11 +17,24 @@ export default function Marketplace({ methods }) {
             <div className="py-4">
                 <WalletBar
                     address={account.data} 
+                    network={{
+                        data: network.data,
+                        target: network.target,
+                        isSupported: network.isSupported,
+                        hasInitialResponse: network.hasInitialResponse
+                    }}
                 />
             </div>
-            <MethodList
+            <MethodList 
                 methods={methods}
-            />
+            >
+                {method => 
+                    <MethodCard
+                        key={method.id} 
+                        method={method}
+                    /> 
+                }
+            </MethodList>
         </>
     )
 }

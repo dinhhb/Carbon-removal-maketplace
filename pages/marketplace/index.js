@@ -1,40 +1,51 @@
 
-import { Hero } from "@components/ui/common"
+import { Button, Hero } from "@components/ui/common"
 import { MethodCard, MethodList } from "@components/ui/method"
 import { BaseLayout } from "@components/ui/layout"
 import { getAllMethods } from "@content/methods/fetcher"
-import { WalletBar } from "@components/ui/web3"
-import { useAccount, useNetwork } from "@components/hooks/web3"
+import { useWalletInfo } from "@components/hooks/web3"
+import { OrderModal } from "@components/ui/order"
+import { useState } from "react"
+import { MarketHeader } from "@components/ui/marketplace"
 
 export default function Marketplace({ methods }) {
 
-    const { account } = useAccount()
-    const { network } = useNetwork()
+    const [selectedMethod, setSelectedMethod] = useState(null)
+    const { canPurchaseMethod } = useWalletInfo()
 
     return (
         <>
-            <Hero />
+            {/* <Hero /> */}
             <div className="py-4">
-                <WalletBar
-                    address={account.data} 
-                    network={{
-                        data: network.data,
-                        target: network.target,
-                        isSupported: network.isSupported,
-                        hasInitialResponse: network.hasInitialResponse
-                    }}
-                />
+                <MarketHeader/>
             </div>
-            <MethodList 
+            <MethodList
                 methods={methods}
             >
-                {method => 
+                {method =>
                     <MethodCard
-                        key={method.id} 
+                        key={method.id}
                         method={method}
-                    /> 
+                        disabled={!canPurchaseMethod}
+                        Footer={() =>
+                            <div className="mt-4">
+                                <Button
+                                    onClick={() => setSelectedMethod(method)}
+                                    disabled={!canPurchaseMethod}
+                                    variant="lightGreen">
+                                    Mua
+                                </Button>
+                            </div>
+                        }
+                    />
                 }
             </MethodList>
+            {selectedMethod &&
+                <OrderModal
+                    method={selectedMethod}
+                    onClose={() => setSelectedMethod(null)}
+                />
+            }
         </>
     )
 }

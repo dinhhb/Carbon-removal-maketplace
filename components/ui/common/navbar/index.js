@@ -1,7 +1,6 @@
 import { useWeb3 } from '@components/providers';
 import Image from 'next/image';
-import Link from 'next/link'
-import { Button } from '@components/ui/common';
+import { ActiveLink, Button } from '@components/ui/common';
 import { useAccount } from '@components/hooks/web3';
 import { useRouter } from 'next/router';
 
@@ -19,14 +18,16 @@ export default function Navbar() {
               <Image src="/logo.png" alt="Logo" width={150} height={60} />
             </div>
             <div className="flex space-x-8"> {/* Updated this line */}
-              <Link href="/"
-                className="font-medium text-gray-500 hover:text-green-600">
-                Trang chủ
-              </Link>
-              <Link href="/marketplace"
-                className="font-medium text-gray-500 hover:text-green-600">
-                Thị trường
-              </Link>
+              <ActiveLink href="/" >
+                <a className="font-medium text-gray-500 hover:text-green-600">
+                  Trang chủ
+                </a>
+              </ActiveLink>
+              <ActiveLink href="/marketplace" >
+                <a className="font-medium text-gray-500 hover:text-green-600">
+                  Thị trường
+                </a>
+              </ActiveLink>
             </div>
             <div className="flex-grow" />
             { isLoading ?

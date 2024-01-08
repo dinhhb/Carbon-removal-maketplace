@@ -1,14 +1,19 @@
+import { ActiveLink } from "@components/ui/common"
 
-
-
-export default function Breadcrumbs() {
+export default function Breadcrumbs({ items }) {
 
   return (
-    <nav aria-label="breadcrumb" className="mb-4">
+    <nav aria-label="breadcrumb" className="">
       <ol className="flex leading-none text-gray-500 divide-x divide-grey-400">
-        <li className="pr-4 hover:text-green-600"><a href="#">Mua</a></li>
-        <li className="px-4 hover:text-green-600"><a href="#">Đơn hàng của tôi</a></li>
-        <li className="px-4 hover:text-green-600"><a href="#">Tất cả đơn hàng</a></li>
+        {items.map((item, i) =>
+          <li key={item.href} className={`${i == 0 ? "pr-4" : "px-4"} font-medium text-gray-500 hover:text-green-600`}>
+            <ActiveLink href={item.href}>
+              <a>
+                {item.value}
+              </a>
+            </ActiveLink>
+          </li>
+        )}
       </ol>
     </nav>
   )

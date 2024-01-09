@@ -1,4 +1,5 @@
 import useSWR from "swr"
+import methods from "@content/methods"
 
 const URL = "https://api.coingecko.com/api/v3/coins/ethereum?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false"
 const METHOD_PRICE = 4000000
@@ -18,8 +19,15 @@ export const useEthPrice = () => {
         // { refreshInterval: 1000 }
     )
 
-    const perItem = (data && (METHOD_PRICE / Number(data)).toFixed(6)) ?? null
+    // const perItem = (data && (METHOD_PRICE / Number(data)).toFixed(6)) ?? null
 
-    return { eth: {data, perItem, ...rest}}
+    const perItem = {}
+
+    methods.forEach(method => {
+        const price = method?.price ?? METHOD_PRICE;
+        perItem[method.id] = data ? (price / Number(data)).toFixed(6): null
+    });
+
+    return { eth: { data, perItem, ...rest } }
     // return swrRes
 }

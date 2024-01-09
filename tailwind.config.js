@@ -11,6 +11,14 @@ module.exports = {
       },
     },
   },
+  safelist: [
+    {
+      pattern: /bg-(red|green|yellow)-(100|200|600|900)/,
+    },
+    {
+      pattern: /text-(red|green|yellow)-(100|200|600|900)/,
+    },
+  ],
   variants: {
     extend: {
       opacity: ["disabled"],

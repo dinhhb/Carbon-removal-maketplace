@@ -1,7 +1,10 @@
 import Image from "next/legacy/image"
 import Link from "next/link"
+import { useEthPrice } from "@components/hooks/useEthPrice"
 
 export default function Card({method, disabled, Footer}) {
+  const { eth } = useEthPrice()
+
   return (
     <div 
         className="bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
@@ -29,6 +32,7 @@ export default function Card({method, disabled, Footer}) {
             <p className="mt-2 text-gray-500">
             {method.description.substring(0, 130)}...
             </p>
+            <p>Price: {eth.perItem[method.id]}</p>
             { Footer &&
               <Footer/>
             }

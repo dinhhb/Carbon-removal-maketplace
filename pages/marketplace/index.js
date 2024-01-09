@@ -12,6 +12,9 @@ export default function Marketplace({ methods }) {
 
     const [selectedMethod, setSelectedMethod] = useState(null)
     const { canPurchaseMethod } = useWalletInfo()
+    const purchaseMethod = (order) => {
+        alert(JSON.stringify(order))
+    }
 
     return (
         <>
@@ -43,6 +46,7 @@ export default function Marketplace({ methods }) {
             {selectedMethod &&
                 <OrderModal
                     method={selectedMethod}
+                    onSubmit={purchaseMethod}
                     onClose={() => setSelectedMethod(null)}
                 />
             }

@@ -28,7 +28,7 @@ export default function EthRates() {
               </div>
             }
           </div>
-          <p className="text-xl text-gray-500">Giá eth hiện tại</p>
+          <p className="text-xl text-gray-500">Giá ETH hiện tại</p>
         </div>
       </div>
       {/* <div className="flex flex-1 items-stretch text-center">

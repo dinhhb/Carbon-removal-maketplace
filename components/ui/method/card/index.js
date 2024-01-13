@@ -19,7 +19,7 @@ export default function Card({method, disabled, Footer}) {
             alt={method.title}
             />
         </div>
-        <div className="p-8 pb-4 flex-2">
+        <div className="p-8 pb-4 flex-1.5">
             <div className="uppercase tracking-wide text-sm text-green-600 font-semibold">
             {method.scale}
             </div>

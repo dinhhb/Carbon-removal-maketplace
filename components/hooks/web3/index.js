@@ -21,6 +21,14 @@ export const useAccount = () => {
     }
 }
 
+export const useOwnedMethods = (...args) => {
+    const swrRes = enhanceHook(useHooks(hooks => hooks.useOwnedMethods)(...args))
+
+    return {
+        ownedMethods: swrRes
+    }
+}
+
 export const useWalletInfo = () => {
     const { account } = useAccount()
     const { network } = useNetwork()

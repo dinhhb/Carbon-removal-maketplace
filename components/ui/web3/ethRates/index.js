@@ -14,12 +14,13 @@ export default function EthRates() {
               <>
                 <Image
                   layout="fixed"
+                  alt=""
                   height="35"
                   width="35"
                   src="/small-eth.webp"
                 />
                 <span className="text-2xl font-bold">
-                  = {eth.data}$
+                  = {eth.data} ₫
                 </span>
               </> :
               <div className="w-full flex justify-center">

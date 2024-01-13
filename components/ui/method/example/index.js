@@ -70,13 +70,13 @@ export default function Example({price,
             <div className="px-4 py-6 sm:grid sm:grid-cols-1 sm:gap-4 sm:px-0">
               <dt className="text-2xl font-medium leading-6 text-gray-900">Thông tin chung</dt>
             </div>
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className=" ext-sm font-medium leading-6 text-gray-900">Giá</dt>
               <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 {price}
               </dd>
-            </div>
-            <hr className="my-1 border-t-1 border-gray-200" /> {/* Horizontal line */}
+            </div> */}
+            {/* <hr className="my-1 border-t-1 border-gray-200" /> Horizontal line */}
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm font-medium leading-6 text-gray-900">Độ bền</dt>
               <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">

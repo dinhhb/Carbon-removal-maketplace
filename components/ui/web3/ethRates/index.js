@@ -20,7 +20,7 @@ export default function EthRates() {
                   src="/small-eth.webp"
                 />
                 <span className="text-2xl font-bold">
-                  = {eth.data} ₫
+                  = {eth.data}₫
                 </span>
               </> :
               <div className="w-full flex justify-center">
@@ -28,7 +28,7 @@ export default function EthRates() {
               </div>
             }
           </div>
-          <p className="text-xl text-gray-500">Current eth Price</p>
+          <p className="text-xl text-gray-500">Giá eth hiện tại</p>
         </div>
       </div>
       {/* <div className="flex flex-1 items-stretch text-center">

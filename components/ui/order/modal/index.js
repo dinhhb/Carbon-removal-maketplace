@@ -12,16 +12,16 @@ const _createFormState = (isDisabled = false, message = "") => ({ isDisabled, me
 
 const createFormState = ({ price, email, confirmationEmail }, hasAgreedTOS) => {
     if (!price || Number(price) <= 0) {
-        return _createFormState(true, "Price is not valid.")
+        return _createFormState(true, "Giá không hợp lệ")
     }
     else if (confirmationEmail.length === 0 || email.length === 0) {
         return _createFormState(true)
     }
     else if (email !== confirmationEmail) {
-        return _createFormState(true, "Email are not matching")
+        return _createFormState(true, "Email xác nhận không đúng")
     }
     else if (!hasAgreedTOS) {
-        return _createFormState(true, "You need to agree terms of service")
+        return _createFormState(true, "Bạn cần đồng ý các điều khoản dịch vụ")
     }
 
     return _createFormState()
@@ -66,7 +66,7 @@ export default function OrderModal({ method, onClose, onSubmit }) {
                             </h3>
                             <div className="mt-1 relative rounded-md">
                                 <div className="mb-1">
-                                    <label className="mb-2 font-bold">Price(eth)</label>
+                                    <label className="mb-2 font-bold">Giá (eth)</label>
                                     <div className="text-xs text-gray-700 flex">
                                         <label className="flex items-center mr-2">
                                             <input
@@ -82,7 +82,7 @@ export default function OrderModal({ method, onClose, onSubmit }) {
                                                 className="form-checkbox"
                                             />
                                         </label>
-                                        <span>Adjust Price - only when the price is not correct</span>
+                                        <span>Thay đổi giá - chỉ khi giá hiện tại không đúng</span>
                                     </div>
                                 </div>
                                 <input
@@ -101,7 +101,7 @@ export default function OrderModal({ method, onClose, onSubmit }) {
                                     className="disabled:opacity-50 w-80 mb-1 focus:ring-green-500 shadow-md focus:border-green-500 block pl-7 p-4 sm:text-sm border-gray-300 rounded-md"
                                 />
                                 <p className="text-xs text-gray-700">
-                                    Price will be verified at the time of the order. If the price will be lower, order can be declined (+- 2% slipage is allowed)
+                                    Giá sẽ được xác nhận tại thời điểm đặt hàng. Nếu giá thấp hơn, đơn hàng có thể bị từ chối (cho phép +- 2%)
                                 </p>
                             </div>
                             <div className="mt-2 relative rounded-md">
@@ -121,13 +121,13 @@ export default function OrderModal({ method, onClose, onSubmit }) {
                                     className="w-80 focus:ring-green-500 shadow-md focus:border-green-500 block pl-7 p-4 sm:text-sm border-gray-300 rounded-md"
                                     placeholder="x@y.com"
                                 />
-                                <p className="text-xs text-gray-700 mt-1">
+                                {/* <p className="text-xs text-gray-700 mt-1">
                                     It&apos;s important to fill a correct email, otherwise the order cannot be verified. We are not storing your email anywhere
-                                </p>
+                                </p> */}
                             </div>
                             <div className="my-2 relative rounded-md">
                                 <div className="mb-1">
-                                    <label className="mb-2 font-bold">Repeat Email</label>
+                                    <label className="mb-2 font-bold">Xác nhận Email</label>
                                 </div>
                                 <input
                                     onChange={({ target: { value } }) => {
@@ -151,7 +151,8 @@ export default function OrderModal({ method, onClose, onSubmit }) {
                                         type="checkbox"
                                         className="form-checkbox" />
                                 </label>
-                                <span>I accept Eincode &apos;terms of service&apos; and I agree that my order can be rejected in the case data provided above are not correct</span>
+                                {/* <span>I accept Eincode &apos;terms of service&apos; and I agree that my order can be rejected in the case data provided above are not correct</span> */}
+                                <span>Tôi xin chấp nhận các điều khoản dịch vụ</span>
                             </div>
                             { formState.message &&
                                 <div className="p-4 my-3 text-red-700 bg-red-200 rounded-lg text-sm">
@@ -167,12 +168,12 @@ export default function OrderModal({ method, onClose, onSubmit }) {
                         onClick={() => {
                             onSubmit(order)
                         }}>
-                        Submit
+                        Xác nhận
                     </Button>
                     <Button
                         onClick={closeModal}
                         variant="red">
-                        Cancel
+                        Huỷ
                     </Button>
                 </div>
             </div>

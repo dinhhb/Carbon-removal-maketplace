@@ -4,6 +4,7 @@ import { useEthPrice } from "@components/hooks/useEthPrice"
 
 export default function Card({method, disabled, Footer}) {
   const { eth } = useEthPrice()
+  const price = eth.perItem[method.id]
 
   return (
     <div 
@@ -29,10 +30,10 @@ export default function Card({method, disabled, Footer}) {
             {/* <p className="mt-2 text-gray-500">
             {method.price} - Độ bền {method.durabilityLevel}
             </p> */}
+            <p className="mt-2 font-semibold text-green-600">{price}Ξ ~ {Number(price * eth.data).toFixed(2)}₫/tấn</p>
             <p className="mt-2 text-gray-500">
             {method.description.substring(0, 130)}...
             </p>
-            <p>Price: {eth.perItem[method.id]}</p>
             { Footer &&
               <Footer/>
             }

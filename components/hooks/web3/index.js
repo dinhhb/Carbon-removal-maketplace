@@ -1,9 +1,24 @@
 import { useHooks } from "@components/providers/web3"
 
+const _isEmpty = data => {
+    return (
+        data == null || 
+        data === "" || 
+        (Array.isArray(data) && data.length === 0) ||
+        (data.constructor === Object && Object.keys(data).length === 0)
+    )
+}
+
 const enhanceHook = (swrRes) => {
+
+    const { data, error } = swrRes
+    const hasInitialResponse = !!(data || error)
+    const isEmpty = hasInitialResponse && _isEmpty(data)
+
     return {
         ...swrRes,
-        hasInitialResponse: swrRes.data || swrRes.error
+        isEmpty,
+        hasInitialResponse
     }
 }
 
@@ -26,6 +41,14 @@ export const useOwnedMethods = (...args) => {
 
     return {
         ownedMethods: swrRes
+    }
+}
+
+export const useOwnedMethod = (...args) => {
+    const swrRes = enhanceHook(useHooks(hooks => hooks.useOwnedMethod)(...args))
+
+    return {
+        ownedMethod: swrRes
     }
 }
 

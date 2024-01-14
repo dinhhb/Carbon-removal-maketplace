@@ -19,14 +19,24 @@ export const handler = (web3, provider) => () => {
         web3 ? "web3/network" : null,
         async () => {
             const chainId = await web3.eth.getChainId()
+
+            if (!chainId) {
+                throw new Error("Cannot retreive network")
+            }
+
             return NETWORKS[chainId]
         }
     )
 
     useEffect(() => {
-        provider &&
-        provider.on("chainChaned", chainId => mutate(NETWORKS[parseInt(chainId, 16)]))
-    }, [web3])
+        const mutator = (chainId) => mutate(NETWORKS[parseInt(chainId, 16)])
+
+        provider?.on("chainChaned", mutator)
+
+        return () => {
+            provider?.removeListener("chainChaned", mutator)
+        }
+    }, [provider])
 
     return{
         data,

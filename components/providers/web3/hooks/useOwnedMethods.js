@@ -1,3 +1,4 @@
+import { createMethodHash } from "@utils/hash"
 import { normalizeOwnedMethod } from "@utils/normalize"
 import useSWR from "swr"
 
@@ -12,11 +13,7 @@ export const handler = (web3, contract) => (methods, account) => {
 
                 if (!method.id) { continue }
                 
-                const hexMethodId = web3.utils.utf8ToHex(method.id)
-                const methodHash = web3.utils.soliditySha3(
-                    {type: "bytes16", value: hexMethodId},
-                    {type: "address", value: account}
-                )
+                const methodHash = createMethodHash(web3)(method.id, account)
 
                 const ownedMethod = await contract.methods.getMethodByHash(methodHash).call()
                 if (ownedMethod.owner != "0x0000000000000000000000000000000000000000") {

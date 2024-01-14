@@ -4,16 +4,16 @@ import { BaseLayout } from "@components/ui/layout";
 import { MarketHeader } from "@components/ui/marketplace";
 import { OwnedMethodCard } from "@components/ui/method";
 import { getAllMethods } from "@content/methods/fetcher";
+import { useRouter } from "next/router";
 
 export default function OwnedMethods({ methods }) {
     const { account } = useAccount()
     const { ownedMethods } = useOwnedMethods(methods, account.data)
+    const router = useRouter()
 
     return (
         <>
-            <div className="py-4">
-                <MarketHeader />
-            </div>
+            <MarketHeader />
             <section className="grid grid-cols-1">
                 {ownedMethods.data?.map(method =>
                     <OwnedMethodCard
@@ -23,9 +23,9 @@ export default function OwnedMethods({ methods }) {
                         {/* <Message>
                             Test message
                         </Message> */}
-                        {/* <Button>
-                            Test button
-                        </Button> */}
+                        <Button onClick={() => router.push(`/methods/${method.slug}`)}>
+                            Xem chi tiết
+                        </Button>
                     </OwnedMethodCard>
                 )}
             </section>

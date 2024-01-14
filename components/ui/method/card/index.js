@@ -24,14 +24,14 @@ export default function Card({method, disabled, Footer}) {
             {method.scale}
             </div>
             <Link href={`/methods/${method.slug}`}
-            className="h-12 block mt-1 text-lg leading-tight font-medium text-black hover:underline">
+            className="h-12 block mt-1 text-sm sm:text-lg leading-tight font-medium text-black hover:underline">
             {method.title}
             </Link>
             {/* <p className="mt-2 text-gray-500">
             {method.price} - Độ bền {method.durabilityLevel}
             </p> */}
             <p className="mt-2 font-semibold text-green-600">{price}Ξ ~ {Number(price * eth.data).toFixed(2)}₫/tấn</p>
-            <p className="mt-2 text-gray-500">
+            <p className="mt-2 text-sm sm:text-base text-gray-500">
             {method.description.substring(0, 130)}...
             </p>
             { Footer &&

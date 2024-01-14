@@ -7,12 +7,10 @@ export default function ManageMethods() {
 
     return (
         <>
-            <div className="py-4">
-                <MarketHeader />
-                <MethodFilter />
-            </div>
+            <MarketHeader />
+            <MethodFilter />
             <section className="grid grid-cols-1">
-                <OwnedMethodCard>
+                {/* <OwnedMethodCard>
                     <div className="flex mr-2 relative rounded-md">
                         <input
                             type="text"
@@ -24,7 +22,7 @@ export default function ManageMethods() {
                             Verify
                         </Button>
                     </div>
-                </OwnedMethodCard>
+                </OwnedMethodCard> */}
             </section>
         </>
     )

@@ -1,7 +1,7 @@
 export const METHOD_STATES = {
-    0: "purchased",
-    1: "activated",
-    2: "deactivated"
+    0: "Đã mua",
+    1: "Đã kích hoạt",
+    2: "Đã vô hiệu hoá"
 }
 
 export const normalizeOwnedMethod = web3 => (method, ownedMethod) => {

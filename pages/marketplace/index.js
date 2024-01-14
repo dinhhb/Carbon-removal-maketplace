@@ -40,7 +40,7 @@ export default function Marketplace({ methods }) {
             const result = await contract.methods.purchaseMethod(
                 hexMethodId,
                 proof
-            ).send({from: account.data, value})
+            ).send({ from: account.data, value })
             console.log(result)
         } catch {
             console.error("Purchase method: Operation has failed.")
@@ -50,9 +50,7 @@ export default function Marketplace({ methods }) {
     return (
         <>
             {/* <Hero /> */}
-            <div className="py-4">
-                <MarketHeader/>
-            </div>
+            <MarketHeader />
             <MethodList
                 methods={methods}
             >

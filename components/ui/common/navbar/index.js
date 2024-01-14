@@ -13,7 +13,7 @@ export default function Navbar() {
     <section>
       <div className="relative pt-6 px-4 sm:px-6 lg:px-8">
         <nav className="relative" aria-label="Global">
-          <div className="flex h-full items-center">
+          <div className="flex flex-col xs:flex-row h-full items-center">
             <div className="flex items-center"> {/* Updated this line */}
               <Image src="/logo.png" alt="Logo" width={150} height={60} />
             </div>

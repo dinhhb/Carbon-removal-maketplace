@@ -1,9 +1,11 @@
-import { useHooks } from "@components/providers/web3"
+import { useHooks, useWeb3 } from "@components/providers/web3"
+import { useRouter } from "next/router"
+import { useEffect } from "react"
 
 const _isEmpty = data => {
     return (
-        data == null || 
-        data === "" || 
+        data == null ||
+        data === "" ||
         (Array.isArray(data) && data.length === 0) ||
         (data.constructor === Object && Object.keys(data).length === 0)
     )
@@ -36,6 +38,22 @@ export const useAccount = () => {
     }
 }
 
+export const useAdmin = ({ redirectTo }) => {
+    const { account } = useAccount()
+    const { requireInstall } = useWeb3()
+    const router = useRouter()
+
+    useEffect(() => {
+        if ((requireInstall ||
+            account.hasInitialResponse && !account.isAdmin) ||
+            account.isEmpty) {
+            router.push(redirectTo)
+        }
+
+    }, [account])
+    return { account }
+}
+
 export const useOwnedMethods = (...args) => {
     const swrRes = enhanceHook(useHooks(hooks => hooks.useOwnedMethods)(...args))
 
@@ -52,10 +70,18 @@ export const useOwnedMethod = (...args) => {
     }
 }
 
+export const useManagedMethods = (...args) => {
+    const swrRes = enhanceHook(useHooks(hooks => hooks.useManagedMethods)(...args))
+
+    return {
+        managedMethods: swrRes
+    }
+}
+
 export const useWalletInfo = () => {
     const { account } = useAccount()
     const { network } = useNetwork()
-    
+
     return {
         account,
         network,

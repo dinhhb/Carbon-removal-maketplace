@@ -32,8 +32,8 @@ const VerificationInput = ({ onVerify }) => {
 
 export default function ManagedMethods() {
     const [proofedOwnership, setProofedOwnership] = useState({})
-    const { web3 } = useWeb3()
-    const { account } = useAdmin({redirectTo: "/marketplace"})
+    const { web3, contract } = useWeb3()
+    const { account } = useAdmin({ redirectTo: "/marketplace" })
     const { managedMethods } = useManagedMethods(account)
 
     const verifyMethod = (email, { hash, proof }) => {
@@ -52,6 +52,14 @@ export default function ManagedMethods() {
                 ...proofedOwnership,
                 [hash]: false
             })
+    }
+
+    const activateMethod = async (methodHash) => {
+        try {
+            await contract.methods.activateMethod(methodHash).send({from: account.data})
+        } catch (e) {
+            console.log(e.message)
+        }
     }
 
     if (!account.isAdmin) {
@@ -84,6 +92,16 @@ export default function ManagedMethods() {
                         {proofedOwnership[method.hash] === false &&
                             <div className="mt-2">
                                 <Message type="danger">Không hợp lệ!</Message>
+                            </div>
+                        }
+                        {method.state === "Đã mua" &&
+                            <div className="mt-2">
+                                <Button onClick={() => activateMethod(method.hash)}>
+                                    Kích hoạt
+                                </Button>
+                                <Button variant="red">
+                                    Vô hiệu hoá
+                                </Button>
                             </div>
                         }
                     </ManagedMethodCard>

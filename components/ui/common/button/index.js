@@ -11,7 +11,8 @@ export default function Button({
     const variants = {
         white: `text-black bg-white`,
         green: `text-white bg-green-600 ${hoverable && "hover:bg-green-700"}`,
-        lightGreen: `text-green-700 bg-green-100 ${hoverable && "hover:bg-green-200"}`
+        lightGreen: `text-green-700 bg-green-100 ${hoverable && "hover:bg-green-200"}`,
+        red: `text-white bg-red-600 ${hoverable && "hover:bg-red-700"}`,
     }
 
     return (

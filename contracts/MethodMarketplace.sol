@@ -31,8 +31,17 @@ contract MethodMarketplace {
         setContractOwner(msg.sender);
     }
 
+    /// Method has invalid state!
+    error InvalidState();
+
+    /// Method is not created!
+    error MethodIsNotCreated();
+
     /// Method has already a owner!
     error MethodHasOwner();
+
+    /// Sender is not the method owner!
+    error SenderIsNotMethodOwner();
 
     /// Only owner has an access!
     error OnlyOwner();
@@ -65,6 +74,57 @@ contract MethodMarketplace {
         });
     }
 
+    function repurchaseMethod(bytes32 methodHash) external payable {
+        if (!isMethodCreated(methodHash)) {
+            revert MethodIsNotCreated();
+        }
+
+        if (!hasMethodOwnership(methodHash)) {
+            revert SenderIsNotMethodOwner();
+        }
+
+        Method storage method = ownedMethods[methodHash];
+
+        if (method.state != State.Deactivated) {
+            revert InvalidState();
+        }
+
+        method.state = State.Purchased;
+        method.price = msg.value;
+    }
+
+    function activateMethod(bytes32 methodHash) external onlyOwner {
+        if (!isMethodCreated(methodHash)) {
+            revert MethodIsNotCreated();
+        }
+
+        Method storage method = ownedMethods[methodHash];
+
+        if (method.state != State.Purchased) {
+            revert InvalidState();
+        }
+
+        method.state = State.Activated;
+    }
+
+    function deactivateMethod(bytes32 methodHash) external onlyOwner {
+        if (!isMethodCreated(methodHash)) {
+            revert MethodIsNotCreated();
+        }
+
+        Method storage method = ownedMethods[methodHash];
+
+        if (method.state != State.Purchased) {
+            revert InvalidState();
+        }
+
+        (bool success, ) = method.owner.call{value: method.price}("");
+        require(success, "Transfer failed");
+
+        method.state = State.Deactivated;
+        method.price = 0;
+    }
+
     function transferOwnership(address newOwner) external onlyOwner {
         setContractOwner(newOwner);
     }
@@ -87,6 +147,10 @@ contract MethodMarketplace {
 
     function setContractOwner(address newOwner) private {
         owner = payable(newOwner);
+    }
+
+    function isMethodCreated(bytes32 methodHash) private view returns (bool) {
+        return ownedMethods[methodHash].owner != 0x0000000000000000000000000000000000000000;
     }
 
     function hasMethodOwnership(bytes32 methodHash) private view returns (bool) {

@@ -10,24 +10,28 @@ const defaultOrder = {
 
 const _createFormState = (isDisabled = false, message = "") => ({ isDisabled, message })
 
-const createFormState = ({ price, email, confirmationEmail }, hasAgreedTOS) => {
+const createFormState = ({ price, email, confirmationEmail }, hasAgreedTOS, isNewPurchase) => {
     if (!price || Number(price) <= 0) {
         return _createFormState(true, "Giá không hợp lệ")
     }
-    else if (confirmationEmail.length === 0 || email.length === 0) {
-        return _createFormState(true)
+
+    if (isNewPurchase) {
+        if (confirmationEmail.length === 0 || email.length === 0) {
+            return _createFormState(true)
+        }
+        else if (email !== confirmationEmail) {
+            return _createFormState(true, "Email xác nhận không đúng")
+        }
     }
-    else if (email !== confirmationEmail) {
-        return _createFormState(true, "Email xác nhận không đúng")
-    }
-    else if (!hasAgreedTOS) {
+
+    if (!hasAgreedTOS) {
         return _createFormState(true, "Bạn cần đồng ý các điều khoản dịch vụ")
     }
 
     return _createFormState()
 }
 
-export default function OrderModal({ method, onClose, onSubmit }) {
+export default function OrderModal({ method, onClose, onSubmit, isNewPurchase }) {
 
     const [isOpen, setIsOpen] = useState(false)
     const [order, setOrder] = useState(defaultOrder)
@@ -53,7 +57,7 @@ export default function OrderModal({ method, onClose, onSubmit }) {
         onClose()
     }
 
-    const formState = createFormState(order, hasAgreedTOS)
+    const formState = createFormState(order, hasAgreedTOS, isNewPurchase)
 
     return (
         <Modal isOpen={isOpen}>
@@ -104,48 +108,53 @@ export default function OrderModal({ method, onClose, onSubmit }) {
                                     Giá sẽ được xác nhận tại thời điểm đặt hàng. Nếu giá thấp hơn, đơn hàng có thể bị từ chối (cho phép +- 2%)
                                 </p>
                             </div>
-                            <div className="mt-2 relative rounded-md">
-                                <div className="mb-1">
-                                    <label className="mb-2 font-bold">Email</label>
-                                </div>
-                                <input
-                                    onChange={({ target: { value } }) => {
-                                        setOrder({
-                                            ...order,
-                                            email: value.trim()
-                                        })
-                                    }}
-                                    type="email"
-                                    name="email"
-                                    id="email"
-                                    className="w-80 focus:ring-green-500 shadow-md focus:border-green-500 block pl-7 p-4 sm:text-sm border-gray-300 rounded-md"
-                                    placeholder="x@y.com"
-                                />
-                                {/* <p className="text-xs text-gray-700 mt-1">
+                            {isNewPurchase &&
+                                <>
+                                    <div className="mt-2 relative rounded-md">
+                                        <div className="mb-1">
+                                            <label className="mb-2 font-bold">Email</label>
+                                        </div>
+                                        <input
+                                            onChange={({ target: { value } }) => {
+                                                setOrder({
+                                                    ...order,
+                                                    email: value.trim()
+                                                })
+                                            }}
+                                            type="email"
+                                            name="email"
+                                            id="email"
+                                            className="w-80 focus:ring-green-500 shadow-md focus:border-green-500 block pl-7 p-4 sm:text-sm border-gray-300 rounded-md"
+                                            placeholder="x@y.com"
+                                        />
+                                        {/* <p className="text-xs text-gray-700 mt-1">
                                     It&apos;s important to fill a correct email, otherwise the order cannot be verified. We are not storing your email anywhere
                                 </p> */}
-                            </div>
-                            <div className="my-2 relative rounded-md">
-                                <div className="mb-1">
-                                    <label className="mb-2 font-bold">Xác nhận Email</label>
-                                </div>
-                                <input
-                                    onChange={({ target: { value } }) => {
-                                        setOrder({
-                                            ...order,
-                                            confirmationEmail: value.trim()
-                                        })
-                                    }}
-                                    type="email"
-                                    name="confirmationEmail"
-                                    id="confirmationEmail"
-                                    className="w-80 focus:ring-green-500 shadow-md focus:border-green-500 block pl-7 p-4 sm:text-sm border-gray-300 rounded-md" placeholder="x@y.com" />
-                            </div>
-                            <div className="text-xs text-gray-700 flex">
+                                    </div>
+
+                                    <div className="my-2 relative rounded-md">
+                                        <div className="mb-1">
+                                            <label className="mb-2 font-bold">Xác nhận Email</label>
+                                        </div>
+                                        <input
+                                            onChange={({ target: { value } }) => {
+                                                setOrder({
+                                                    ...order,
+                                                    confirmationEmail: value.trim()
+                                                })
+                                            }}
+                                            type="email"
+                                            name="confirmationEmail"
+                                            id="confirmationEmail"
+                                            className="w-80 focus:ring-green-500 shadow-md focus:border-green-500 block pl-7 p-4 sm:text-sm border-gray-300 rounded-md" placeholder="x@y.com" />
+                                    </div>
+                                </>
+                            }
+                            <div className="text-xs text-gray-700 mt-5 flex">
                                 <label className="flex items-center mr-2">
                                     <input
                                         checked={hasAgreedTOS}
-                                        onChange={({target: {checked}}) => {
+                                        onChange={({ target: { checked } }) => {
                                             setHasAgreedTOS(checked)
                                         }}
                                         type="checkbox"
@@ -154,9 +163,9 @@ export default function OrderModal({ method, onClose, onSubmit }) {
                                 {/* <span>I accept Eincode &apos;terms of service&apos; and I agree that my order can be rejected in the case data provided above are not correct</span> */}
                                 <span>Tôi xin chấp nhận các điều khoản dịch vụ</span>
                             </div>
-                            { formState.message &&
-                                <div className="p-4 my-3 text-red-700 bg-red-200 rounded-lg text-sm">
-                                    { formState.message }
+                            {formState.message &&
+                                <div className="p-4 my-3 text-yellow-700 bg-yellow-200 rounded-lg text-sm">
+                                    {formState.message}
                                 </div>
                             }
                         </div>

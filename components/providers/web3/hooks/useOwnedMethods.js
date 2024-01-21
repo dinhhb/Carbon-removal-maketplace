@@ -3,6 +3,7 @@ import { normalizeOwnedMethod } from "@utils/normalize"
 import useSWR from "swr"
 
 export const handler = (web3, contract) => (methods, account) => {
+
     const swrRes = useSWR(() => 
         (web3 && contract && account) ? `web3/ownedMethods/${account}` : null,
         async () => {
@@ -25,5 +26,11 @@ export const handler = (web3, contract) => (methods, account) => {
             return ownedMethods
         }
     )
-    return swrRes
+    return {
+        ...swrRes,
+        lookup: swrRes.data?.reduce((a, c) => {
+            a[c.id] = c
+            return a
+        }, {}) ?? {}
+    }
 }

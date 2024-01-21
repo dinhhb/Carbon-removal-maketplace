@@ -7,6 +7,10 @@ import { loadContract } from "@utils/loadContract";
 
 const Web3Context = createContext(null)
 
+const setListeners = (provider) => {
+    provider.on("chainChanged", _ => window.location.reload())
+}
+
 const createWeb3State = ({ web3, provider, contract, isLoading }) => {
     return {
         web3,
@@ -36,7 +40,8 @@ export default function Web3Provider({ children }) {
                 const web3 = new Web3(provider)
                 const contract = await loadContract("MethodMarketplace", web3)
                 // console.log(contract)
-
+                
+                setListeners(provider)
                 setWeb3Api(
                     createWeb3State({
                         web3,

@@ -1,7 +1,7 @@
 import Image from "next/legacy/image"
 
 const STATE_COLORS = {
-  "Đã mua": "green",
+  "Đã mua": "yellow",
   "Đã kích hoạt": "green",
   "Đã vô hiệu hoá": "red"
 }

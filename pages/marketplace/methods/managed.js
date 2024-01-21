@@ -54,12 +54,20 @@ export default function ManagedMethods() {
             })
     }
 
-    const activateMethod = async (methodHash) => {
+    const changeMethodState = async (methodHash, method) => {
         try {
-            await contract.methods.activateMethod(methodHash).send({from: account.data})
+            await contract.methods[method](methodHash).send({from: account.data})   // methods.activateMethod --> methods[method]
         } catch (e) {
             console.log(e.message)
         }
+    }
+
+    const activateMethod = async (methodHash) => {
+        changeMethodState(methodHash, "activateMethod")
+    }
+
+    const deactivateMethod = async (methodHash) => {
+        changeMethodState(methodHash, "deactivateMethod")
     }
 
     if (!account.isAdmin) {
@@ -99,7 +107,7 @@ export default function ManagedMethods() {
                                 <Button onClick={() => activateMethod(method.hash)}>
                                     Kích hoạt
                                 </Button>
-                                <Button variant="red">
+                                <Button variant="red" onClick={() => deactivateMethod(method.hash)}>
                                     Vô hiệu hoá
                                 </Button>
                             </div>

@@ -7,7 +7,7 @@ import { handler as createManagedMethodsHook } from "./useManagedMethods";
 export const setupHooks = ({web3, provider, contract}) => {
     return {
         useAccount: createAccountHook(web3, provider),
-        useNetwork: createNetworkHook(web3, provider),
+        useNetwork: createNetworkHook(web3),
         useOwnedMethods: createOwnedMethodsHook(web3, contract),
         useOwnedMethod: createOwnedMethodHook(web3, contract),
         useManagedMethods: createManagedMethodsHook(web3, contract)

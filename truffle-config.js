@@ -40,6 +40,3 @@ module.exports = {
 
   //  > transaction hash:    0xa5ba36155fdcaf2121b5050051411f1cee85e101cc88d0bc34b016b9b7a05cbe
   //  > contract address:    0xf76241F98AD19ACe5900d4DeeB5356d18071E676
-
-  // NEXT_PUBLIC_TARGET_CHAIN_ID=1337
-  // NEXT_PUBLIC_NETWORK_ID=5777

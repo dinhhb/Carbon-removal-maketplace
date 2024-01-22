@@ -8,6 +8,7 @@ import { OrderModal } from "@components/ui/order"
 import { useState } from "react"
 import { MarketHeader } from "@components/ui/marketplace"
 import { useWeb3 } from "@components/providers"
+import { withToast } from "@utils/toast"
 
 export default function Marketplace({ methods }) {
 
@@ -17,8 +18,8 @@ export default function Marketplace({ methods }) {
     const [selectedMethod, setSelectedMethod] = useState(null)
     const [isNewPurchase, setIsNewPurchase] = useState(true)
 
-    const purchaseMethod = async (order) => {
-        const hexMethodId = web3.utils.utf8ToHex(selectedMethod.id)
+    const purchaseMethod = async (order, method) => {
+        const hexMethodId = web3.utils.utf8ToHex(method.id)
         // console.log(hexMethodId)    // 0x31343130343734
 
         const orderHash = web3.utils.soliditySha3(
@@ -38,28 +39,33 @@ export default function Marketplace({ methods }) {
                 { type: "bytes32", value: orderHash }   // 0x6eff191f0ef27555bf12365ae52cea873ea30f5af7eaf985f9e660bd05822d03
             )
             // console.log(proof)  // 0x048528f7a1444b5b21dccad6060899e4d3ae4b6090595c861aaa53a13d554329
-            _purchaseMethod(hexMethodId, proof, value)
+            withToast(_purchaseMethod(hexMethodId, proof, value))
         } else {
-            _repurchaseMethod(orderHash, value)
+            withToast(_repurchaseMethod(orderHash, value))
         }
     }
 
     const _purchaseMethod = async (hexMethodId, proof, value) => {
         try {
             const result = await contract.methods.purchaseMethod(hexMethodId, proof).send({ from: account.data, value })
-            console.log(result)
-        } catch {
-            console.error("Purchase method: Operation has failed.")
+            return result
+        } catch (error) {
+            throw new Error(error.message)
         }
     }
 
     const _repurchaseMethod = async (methodHash, value) => {
         try {
             const result = await contract.methods.repurchaseMethod(methodHash).send({ from: account.data, value })
-            console.log(result)
-        } catch {
-            console.error("Purchase method: Operation has failed.")
+            return result
+        } catch (error) {
+            throw new Error(error.message)
         }
+    }
+
+    const cleanupModal = () => {
+        setSelectedMethod(null)
+        setIsNewPurchase(true)
     }
 
     return (
@@ -114,7 +120,7 @@ export default function Marketplace({ methods }) {
                                                     variant="lightGreen">
                                                     Đã mua
                                                 </Button>
-                                                {owned.state === "Đã vô hiệu hoá" &&
+                                                {owned.state === "Đã bị từ chối" &&
                                                     <div className="ml-1">
                                                         <Button
                                                             size="sm"
@@ -125,7 +131,7 @@ export default function Marketplace({ methods }) {
                                                             }}
                                                             variant="green"
                                                         >
-                                                            Phí kích hoạt
+                                                            Mua lại
                                                         </Button>
                                                     </div>
                                                 }
@@ -154,11 +160,11 @@ export default function Marketplace({ methods }) {
                 <OrderModal
                     isNewPurchase={isNewPurchase}
                     method={selectedMethod}
-                    onSubmit={purchaseMethod}
-                    onClose={() => {
-                        setSelectedMethod(null)
-                        setIsNewPurchase(true)
+                    onSubmit={(formData, method) => {
+                        purchaseMethod(formData, method)
+                        cleanupModal()
                     }}
+                    onClose={cleanupModal}
                 />
             }
         </>

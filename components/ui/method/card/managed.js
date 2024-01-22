@@ -22,7 +22,7 @@ export default function ManagedMethodCard({ children, method }) {
                     value={method.ownedMethodId}
                 />
                 <Item
-                    title="Chuỗi băm"
+                    title="Hash"
                     value={method.hash}
                 />
                 <Item

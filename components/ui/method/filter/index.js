@@ -1,7 +1,7 @@
 import { Button } from "@components/ui/common";
 import { useState } from "react";
 
-const OPTIONS = ["Tất cả", "Đã mua", "Đã kích hoạt", "Đã vô hiệu hoá"]
+const OPTIONS = ["Tất cả", "Đã mua", "Đã được xác nhận", "Đã bị từ chối"]
 
 export default function MethodFilter({onSearchSubmit, onFilterSelect}) {
   const [searchText, setSearchText] = useState("")
@@ -18,7 +18,7 @@ export default function MethodFilter({onSearchSubmit, onFilterSelect}) {
           className="w-52 xs:w-96 focus:ring-green-500 shadow-md focus:border-green-500 block pl-7 p-4 sm:text-sm border-gray-300 rounded-md"
           placeholder="0x2341ab..." />
         <Button onClick={() => onSearchSubmit(searchText)}>
-          Search
+          Tìm kiếm
         </Button>
       </div>
       <div className="relative text-gray-700">

@@ -25,14 +25,14 @@ export default function Card({ method, disabled, Footer, state }) {
               {method.scale}
             </div>
             <div>
-              { state === "Đã kích hoạt" &&
+              { state === "Đã được xác nhận" &&
                 <div className="text-xs text-green-700 bg-green-200 p-1 px-3 rounded-full">
-                  Đã kích hoạt
+                  Đã được xác nhận
                 </div>
               }
-              { state === "Đã vô hiệu hoá" &&
+              { state === "Đã bị từ chối" &&
                 <div className="text-xs text-red-700 bg-red-200 p-1 px-3 rounded-full">
-                  Đã vô hiệu hoá
+                  Đã bị từ chối
                 </div>
               }
               { state === "Đã mua" &&

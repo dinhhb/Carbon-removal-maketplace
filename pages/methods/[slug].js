@@ -29,12 +29,12 @@ export default function Course({ method }) {
                                 Bạn đã mua phương pháp này. Vui lòng đợi quá trình xác nhận được thực hiện.
                             </Message>
                         }
-                        {methodState === "Đã kích hoạt" &&
+                        {methodState === "Đã được xác nhận" &&
                             <Message type="success">
                                 Quá trình xác nhận thành công. Dự án sẽ sớm được triển khai.
                             </Message>
                         }
-                        {methodState === "Đã vô hiệu hoá" &&
+                        {methodState === "Đã bị từ chối" &&
                             <Message type="danger">
                                 Quá trình xác nhận không thành công do thông tin thanh toán không hợp lệ.
                             </Message>

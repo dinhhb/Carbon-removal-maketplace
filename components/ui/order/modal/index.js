@@ -175,7 +175,7 @@ export default function OrderModal({ method, onClose, onSubmit, isNewPurchase })
                     <Button
                         disabled={formState.isDisabled}
                         onClick={() => {
-                            onSubmit(order)
+                            onSubmit(order, method)
                         }}>
                         Xác nhận
                     </Button>

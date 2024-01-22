@@ -5,6 +5,7 @@ import { BaseLayout } from "@components/ui/layout";
 import { MarketHeader } from "@components/ui/marketplace";
 import { ManagedMethodCard, MethodFilter } from "@components/ui/method";
 import { normalizeOwnedMethod } from "@utils/normalize";
+import { withToast } from "@utils/toast";
 import { useState } from "react";
 
 const VerificationInput = ({ onVerify }) => {
@@ -63,18 +64,19 @@ export default function ManagedMethods() {
 
     const changeMethodState = async (methodHash, method) => {
         try {
-            await contract.methods[method](methodHash).send({ from: account.data })   // methods.activateMethod --> methods[method]
+            const result = await contract.methods[method](methodHash).send({ from: account.data })   // methods.activateMethod --> methods[method]
+            return result
         } catch (e) {
-            console.log(e.message)
+            throw new Error(e.message)
         }
     }
 
     const activateMethod = async methodHash => {
-        changeMethodState(methodHash, "activateMethod")
+        withToast(changeMethodState(methodHash, "activateMethod"))
     }
 
     const deactivateMethod = async methodHash => {
-        changeMethodState(methodHash, "deactivateMethod")
+        withToast(changeMethodState(methodHash, "deactivateMethod"))
     }
 
     const searchMethod = async hash => {
@@ -120,10 +122,10 @@ export default function ManagedMethods() {
                 {method.state === "Đã mua" &&
                     <div className="mt-2">
                         <Button onClick={() => activateMethod(method.hash)}>
-                            Kích hoạt
+                            Xác nhận
                         </Button>
                         <Button variant="red" onClick={() => deactivateMethod(method.hash)}>
-                            Vô hiệu hoá
+                            Từ chối
                         </Button>
                     </div>
                 }

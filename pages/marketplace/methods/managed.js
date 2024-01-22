@@ -40,6 +40,10 @@ export default function ManagedMethods() {
     const { managedMethods } = useManagedMethods(account)
 
     const verifyMethod = (email, { hash, proof }) => {
+        if (!email) {
+            return
+        }
+
         const emailHash = web3.utils.sha3(email)
         const proofToCheck = web3.utils.soliditySha3(
             { type: "bytes32", value: emailHash },

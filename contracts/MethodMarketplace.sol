@@ -16,6 +16,8 @@ contract MethodMarketplace {
         State state; // 1
     }
 
+    bool public isStopped = false;
+
     // Mapping of methodHash to Method data
     mapping(bytes32 => Method) private ownedMethods;
 
@@ -53,9 +55,43 @@ contract MethodMarketplace {
         _;
     }
 
+    modifier onlyWhenNotStopped {
+        require(!isStopped);
+        _;
+    }
+
+    modifier onlyWhenStopped {
+        require(isStopped);
+        _;
+    }
+
+    receive() external payable {}
+
+    function withdraw(uint amount) external onlyOwner {
+        (bool success, ) = owner.call{value: amount}("");
+        require(success, "Transfer failed");
+    }
+
+    function emergencyWithdraw() external onlyWhenStopped onlyOwner {
+        (bool success, ) = owner.call{value: address(this).balance}("");
+        require(success, "Transfer failed");
+    }
+
+    function selfDestruct() external onlyWhenStopped onlyOwner {
+        selfdestruct(owner);
+    }
+
+    function stopContract() external onlyOwner {
+        isStopped = true;
+    }
+
+    function resumeContract() external onlyOwner {
+        isStopped = false;
+    }
+
     // method id: 0x00000000000000000000000000003130
     // proof: 0x0000000000000000000000000000313000000000000000000000000000003130
-    function purchaseMethod(bytes16 methodId, bytes32 proof) external payable {
+    function purchaseMethod(bytes16 methodId, bytes32 proof) external payable onlyWhenNotStopped {
         bytes32 methodHash = keccak256(abi.encodePacked(methodId, msg.sender));
 
         if (hasMethodOwnership(methodHash)){
@@ -74,7 +110,7 @@ contract MethodMarketplace {
         });
     }
 
-    function repurchaseMethod(bytes32 methodHash) external payable {
+    function repurchaseMethod(bytes32 methodHash) external payable onlyWhenNotStopped {
         if (!isMethodCreated(methodHash)) {
             revert MethodIsNotCreated();
         }
@@ -93,7 +129,7 @@ contract MethodMarketplace {
         method.price = msg.value;
     }
 
-    function activateMethod(bytes32 methodHash) external onlyOwner {
+    function activateMethod(bytes32 methodHash) external onlyWhenNotStopped onlyOwner {
         if (!isMethodCreated(methodHash)) {
             revert MethodIsNotCreated();
         }
@@ -107,7 +143,7 @@ contract MethodMarketplace {
         method.state = State.Activated;
     }
 
-    function deactivateMethod(bytes32 methodHash) external onlyOwner {
+    function deactivateMethod(bytes32 methodHash) external onlyWhenNotStopped onlyOwner {
         if (!isMethodCreated(methodHash)) {
             revert MethodIsNotCreated();
         }
